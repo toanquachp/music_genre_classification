@@ -3,10 +3,12 @@ from tensorflow.keras.layers import Input, Dense, \
     LSTM, TimeDistributed, Convolution1D, \
     MaxPooling1D
 from tensorflow.keras.optimizers import RMSprop
-from common import GENRES, load_track
+from common import GENRES, load_track, get_layer_output_function
 from tensorflow.keras.models import Model
 from tensorflow.keras import backend as K
 import pickle
+import numpy as np
+from optparse import OptionParser
 
 N_LAYERS_CONV = 3
 FILTER_LENGTH = 5
@@ -16,8 +18,8 @@ BATCH_SIZE = 32
 EPOCH_COUNT = 10
 
 def train_model(data):
-    x_train = data['x']
-    y_train = data['y']
+    x_train = data['x_train']
+    y_train = data['y_train']
 
     n_features = x_train.shape[2]
     input_shape = (None, n_features)
@@ -59,12 +61,27 @@ def train_model(data):
     print('Training...')
     
     model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=EPOCH_COUNT,
-              validation_data=(x_train, y_train), verbose=1)
+              validation_data=(data['x_val'], data['y_val']), verbose=1)
 
     return model
 
-metadata = pickle.load(open('data_processing.pickle', 'rb'))
+if __name__ == '__main__':
+    parser = OptionParser()
+    parser.add_option('-d', '--dataset', dest = 'dataset', default = 'data/data_processing.pickle')
+    parser.add_option('-m', '--model', dest='model', default = 'model/model.yaml')
+    parser.add_option('-w', '--weight', dest='weight', default = 'model/model_weight.h5')
+    options, args = parser.parse_args()
+
+metadata = pickle.load(open(options.dataset, 'rb'))
 model = train_model(metadata)
 
-to_predict = load_track("/home/shiro/Projects/MusicGeneration/CRNN - Live Music Genre Recognition/data/before/train/3626043815719777.mp3")
-model.predict(to_predict)
+with open(options.model, 'w') as f:
+    f.write(model.to_yaml())
+
+model.save_weights(options.weight)
+
+# output = get_layer_output_function(model, 'output_merged')
+# (features, duration) = load_track("/home/shiro/Projects/MusicGeneration/CRNN - Live Music Genre Recognition/data/before/train/3626043815719777.mp3")
+# features = np.reshape(features, (1, ), + features.shape)
+
+# print(output(features))
