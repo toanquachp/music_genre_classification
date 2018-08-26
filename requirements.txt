@@ -5,4 +5,3 @@ numpy
 PyYAML==3.13
 scipy
 tensorflow==1.9.0
-tornado==5.0.2
