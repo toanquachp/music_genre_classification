@@ -3,7 +3,7 @@ from tensorflow.keras.layers import Input, Dense, \
     LSTM, TimeDistributed, Convolution1D, \
     MaxPooling1D
 from tensorflow.keras.optimizers import RMSprop
-from common import GENRES, load_track
+from common import GENRES, load_track, get_layer_output_function
 from tensorflow.keras.models import Model
 from tensorflow.keras import backend as K
 import pickle
@@ -67,9 +67,9 @@ def train_model(data):
 
 if __name__ == '__main__':
     parser = OptionParser()
-    parser.add_option('-d', '--dataset', dest = 'dataset', default = 'data_processing.pickle')
-    parser.add_option('-m', '--model', dest='model', default = 'model.yaml')
-    parser.add_option('-w', '--weight', dest='weight', default = 'model_weight.h5')
+    parser.add_option('-d', '--dataset', dest = 'dataset', default = 'data/data_processing.pickle')
+    parser.add_option('-m', '--model', dest='model', default = 'model/model.yaml')
+    parser.add_option('-w', '--weight', dest='weight', default = 'model/model_weight.h5')
     options, args = parser.parse_args()
 
 metadata = pickle.load(open(options.dataset, 'rb'))
@@ -80,4 +80,8 @@ with open(options.model, 'w') as f:
 
 model.save_weights(options.weight)
 
-# o_predict = load_track("/home/shiro/Projects/MusicGeneration/CRNN - Live Music Genre Recognition/data/before/train/3626043815719777.mp3")
+# output = get_layer_output_function(model, 'output_merged')
+# (features, duration) = load_track("/home/shiro/Projects/MusicGeneration/CRNN - Live Music Genre Recognition/data/before/train/3626043815719777.mp3")
+# features = np.reshape(features, (1, ), + features.shape)
+
+# print(output(features))
