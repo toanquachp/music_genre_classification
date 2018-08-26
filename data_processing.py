@@ -11,13 +11,12 @@ from optparse import OptionParser
 
 #default file path
 DEFAULT_FILE = "3672629935623490 (copy).mp3"
-DATASET_PATH = "/home/shiro/Projects/MusicGeneration/data/before/train"
 
 def get_default_shape():
     tmp_features, _ = load_track(DEFAULT_FILE)
     return tmp_features.shape
 
-def collect_data(metadata):
+def collect_data(metadata, dataset_path):
     '''
         Read song from dataset_path
         Convert song to melspectrogram
@@ -35,7 +34,7 @@ def collect_data(metadata):
     for index, file_name in enumerate([*metadata][:track_count]):
         print('processing {}/{}'.format(str(index + 1), str(track_count)))
         
-        path = os.path.join(DATASET_PATH, file_name)
+        path = os.path.join(dataset_path, file_name)
      
         data = load_track(path, default_shape)
         
@@ -51,6 +50,7 @@ def collect_data(metadata):
 
 parser = OptionParser()
 parser.add_option('-t', '--trainmetadata', dest='metadata', default = 'data/train.csv')
+parser.add_option('-d', '--dataset', dest='datasetpath', default = "/home/shiro/Projects/MusicGeneration/data/before/train")
 parser.add_option('-o', '--output', dest='output', default='data/')
 
 options, args = parser.parse_args()
@@ -62,7 +62,7 @@ with open(options.metadata, 'r') as f:
     for row in data:
         labelDic[row[0]] = row[1]
 
-data = collect_data(labelDic)
+data = collect_data(labelDic, options.dataset_path)
 
 # data = collect_data('/home/shiro/Projects/MusicGeneration/CRNN - Live Music Genre Recognition/data.pickle')
 
