@@ -167,5 +167,4 @@ venv.bak/
 .idea/
 /.vscode/
 data/
-*.mp3
 /sthg.code-workspace
