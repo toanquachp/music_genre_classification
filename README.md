@@ -8,6 +8,8 @@
 
 ## Test
 
+`python test.py -t test_pickle -m model_yaml -w weight_h5`
+
 ## Requirements
 
-sudo apt install ffmpeg
+`sudo apt install ffmpeg`
