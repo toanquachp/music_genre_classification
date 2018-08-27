@@ -7,3 +7,7 @@
 `python model.py -d dataset_pickle -m model_yaml_path -w weight_path`
 
 ## Test
+
+## Requirements
+
+sudo apt install ffmpeg

@@ -1,9 +1,8 @@
-import numpy as np
 import librosa as lbr
+import numpy as np
 import tensorflow.keras.backend as K
-import os
 
-GENRES = [1,2,3,4,5,6,7,8] #list of genres
+GENRES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # list of genres
 
 WINDOW_SIZE = 2048
 WINDOW_STRIDE = WINDOW_SIZE // 2

@@ -1,26 +1,31 @@
+import pickle
+from optparse import OptionParser
+
+from sklearn.model_selection import train_test_split
+
+from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input, Dense, \
     Lambda, Dropout, Activation, \
     LSTM, TimeDistributed, Convolution1D, \
     MaxPooling1D
-from tensorflow.keras.optimizers import RMSprop
-from common import GENRES, load_track, get_layer_output_function
 from tensorflow.keras.models import Model
-from tensorflow.keras import backend as K
-import pickle
-import numpy as np
-from optparse import OptionParser
+from tensorflow.keras.optimizers import RMSprop
+
+from common import GENRES
 
 N_LAYERS_CONV = 3
 FILTER_LENGTH = 5
 CONV_FILTER_COUNT = 256
 LSTM_COUNT = 256
-BATCH_SIZE = 32
+BATCH_SIZE = 128
 EPOCH_COUNT = 10
 
 def train_model(data):
-    x_train = data['x_train']
-    y_train = data['y_train']
-
+    x = data['x']
+    y = data['y']
+    
+    (x_train, x_val, y_train, y_val) = train_test_split(x, y, test_size=0.1)
+    
     n_features = x_train.shape[2]
     input_shape = (None, n_features)
 
@@ -61,7 +66,7 @@ def train_model(data):
     print('Training...')
     
     model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=EPOCH_COUNT,
-              validation_data=(data['x_val'], data['y_val']), verbose=1)
+              validation_data=(x_val, y_val), verbose=1)
 
     return model
 
@@ -72,16 +77,10 @@ if __name__ == '__main__':
     parser.add_option('-w', '--weight', dest='weight', default = 'model/model_weight.h5')
     options, args = parser.parse_args()
 
-metadata = pickle.load(open(options.dataset, 'rb'))
-model = train_model(metadata)
+    metadata = pickle.load(open(options.dataset, 'rb'))
+    model = train_model(metadata)
 
-with open(options.model, 'w') as f:
-    f.write(model.to_yaml())
+    with open(options.model, 'w') as f:
+        f.write(model.to_yaml())
 
-model.save_weights(options.weight)
-
-# output = get_layer_output_function(model, 'output_merged')
-# (features, duration) = load_track("/home/shiro/Projects/MusicGeneration/CRNN - Live Music Genre Recognition/data/before/train/3626043815719777.mp3")
-# features = np.reshape(features, (1, ), + features.shape)
-
-# print(output(features))
+    model.save_weights(options.weight)
