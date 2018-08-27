@@ -7,7 +7,6 @@ GENRES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # list of genres
 WINDOW_SIZE = 2048
 WINDOW_STRIDE = WINDOW_SIZE // 2
 N_MELS = 128
-DATASET_PATH = "data/preprocessing"
 
 MEL_KWARGS = {
     'n_fft': WINDOW_SIZE, #window sizes,
@@ -36,7 +35,6 @@ def load_track(filename, enforce_shape = None):
     
     melspectro[melspectro == 0] = 1e-6
     
-    # np.save(os.path.join(DATASET_PATH, filename), (np.log(melspectro), float(new_input.shape[0])/sample_rate))
     return (np.log(melspectro), float(new_input.shape[0])/sample_rate)
 
 def get_layer_output_function(model, layer_name):

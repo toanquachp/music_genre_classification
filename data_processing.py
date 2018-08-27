@@ -5,7 +5,6 @@ from optparse import OptionParser
 from pickle import dump
 
 import numpy as np
-from sklearn.model_selection import train_test_split
 
 from common import load_track
 
@@ -37,7 +36,7 @@ def collect_data(metadata, dataset_path):
 
     pool = mp.Pool(processes=os.cpu_count())
     results = []
-    for index, file_name in enumerate([*metadata][:track_count]):
+    for index, file_name in enumerate([*metadata]):
         path = os.path.join(dataset_path, file_name)
         results.append(pool.apply_async(load_track, args=(path, default_shape)))
 
@@ -48,18 +47,14 @@ def collect_data(metadata, dataset_path):
         # x[index][1] = data[1]
         y[index][int(metadata[file_name]) - 1] = 1
 
-    (x_train, x_val, y_train, y_val) = train_test_split(x, y, test_size=0.3)
-
-    return {'x_train': x_train, 'x_val': x_val,
-            'y_train': y_train, 'y_val': y_val}
+    return {'x': x, 'y': y}
 
 
 parser = OptionParser()
 parser.add_option('-t', '--trainmetadata', dest='metadata', default='data/train.csv')
 parser.add_option('-d', '--dataset', dest='dataset_path',
                   default="/home/shiro/Projects/MusicGeneration/data/before/train")
-parser.add_option('-o', '--output', dest='output', default='data/')
-
+parser.add_option('-o', '--output', dest='output', default='train.pickle')
 options, args = parser.parse_args()
 
 labelDic = {}
@@ -73,5 +68,5 @@ data = collect_data(labelDic, options.dataset_path)
 
 # data = collect_data('/home/shiro/Projects/MusicGeneration/CRNN - Live Music Genre Recognition/data.pickle')
 
-with open(options.output + 'data_processing.pickle', 'wb') as f:
+with open('data/' + options.output, 'wb') as f:
     dump(data, f, protocol=4)

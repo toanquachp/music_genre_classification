@@ -1,6 +1,8 @@
 import pickle
 from optparse import OptionParser
 
+from sklearn.model_selection import train_test_split
+
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input, Dense, \
     Lambda, Dropout, Activation, \
@@ -8,6 +10,7 @@ from tensorflow.keras.layers import Input, Dense, \
     MaxPooling1D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.callbacks import TensorBoard
 
 from common import GENRES
 
@@ -19,8 +22,12 @@ BATCH_SIZE = 128
 EPOCH_COUNT = 10
 
 def train_model(data):
-    x_train = data['x_train']
-    y_train = data['y_train']
+    x = data['x']
+    y = data['y']
+    
+    (x_train, x_val, y_train, y_val) = train_test_split(x, y, test_size=0.1)
+    
+    tbCallBack = tbCallBack = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
 
     n_features = x_train.shape[2]
     input_shape = (None, n_features)
@@ -62,8 +69,7 @@ def train_model(data):
     print('Training...')
     
     model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=EPOCH_COUNT,
-              validation_data=(data['x_val'], data['y_val']), verbose=1)
-
+              validation_data=(x_val, y_val), verbose=1, callbacks=[tbCallBack])
 
     return model
 
@@ -81,9 +87,3 @@ if __name__ == '__main__':
         f.write(model.to_yaml())
 
     model.save_weights(options.weight)
-
-    # output = get_layer_output_function(model, 'output_merged')
-    # (features, duration) = load_track("/home/shiro/Projects/MusicGeneration/CRNN - Live Music Genre Recognition/data/before/train/3626043815719777.mp3")
-    # features = np.reshape(features, (1, ), + features.shape)
-
-    # print(output(features))
