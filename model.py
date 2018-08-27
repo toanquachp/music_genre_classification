@@ -10,6 +10,7 @@ from tensorflow.keras.layers import Input, Dense, \
     MaxPooling1D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.callbacks import TensorBoard
 
 from common import GENRES
 
@@ -26,6 +27,8 @@ def train_model(data):
     
     (x_train, x_val, y_train, y_val) = train_test_split(x, y, test_size=0.1)
     
+    tbCallBack = tbCallBack = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
+
     n_features = x_train.shape[2]
     input_shape = (None, n_features)
 
@@ -66,7 +69,7 @@ def train_model(data):
     print('Training...')
     
     model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=EPOCH_COUNT,
-              validation_data=(x_val, y_val), verbose=1)
+              validation_data=(x_val, y_val), verbose=1, callbacks=[tbCallBack])
 
     return model
 

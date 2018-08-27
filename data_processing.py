@@ -36,7 +36,7 @@ def collect_data(metadata, dataset_path):
 
     pool = mp.Pool(processes=os.cpu_count())
     results = []
-    for index, file_name in enumerate([*metadata][:track_count]):
+    for index, file_name in enumerate([*metadata]):
         path = os.path.join(dataset_path, file_name)
         results.append(pool.apply_async(load_track, args=(path, default_shape)))
 
@@ -54,8 +54,7 @@ parser = OptionParser()
 parser.add_option('-t', '--trainmetadata', dest='metadata', default='data/train.csv')
 parser.add_option('-d', '--dataset', dest='dataset_path',
                   default="/home/shiro/Projects/MusicGeneration/data/before/train")
-parser.add_option('-o', '--output', dest='output', default='data/')
-
+parser.add_option('-o', '--output', dest='output', default='train.pickle')
 options, args = parser.parse_args()
 
 labelDic = {}
@@ -69,5 +68,5 @@ data = collect_data(labelDic, options.dataset_path)
 
 # data = collect_data('/home/shiro/Projects/MusicGeneration/CRNN - Live Music Genre Recognition/data.pickle')
 
-with open(options.output + 'data_processing.pickle', 'wb') as f:
+with open('data/' + options.output, 'wb') as f:
     dump(data, f, protocol=4)
