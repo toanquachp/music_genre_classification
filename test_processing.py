@@ -19,21 +19,27 @@ def collect_data(data, dataset_path):
     default_shape = get_default_shape()
     track_count = len(data)
 
-    x = np.zeroes((track_count, ) + default_shape, dtype = np.float32)
+    x = np.zeros((track_count,) + default_shape, dtype=np.float32)
 
     pool = mp.Pool(processes=os.cpu_count())
 
-    for index, filename in enumerate(data):
+    results = []
+    for index, filename in enumerate([*data]):
         path = os.path.join(dataset_path, filename)
-        x[index] = pool.apply_async(load_track, args = (path, default_shape))
+        results.append(pool.apply_async(load_track, args = (path, default_shape)))
 
-    return {'x': x, 'filename': filename}
+    for index, filename in enumerate([*data]):
+        print('Processing {}/{}'.format(str(index + 1), str(track_count)))
+
+        x[index] = results[index].get()[0]
+
+    return {'x': x, 'filename': np.array(data)}
     
 
 parser = OptionParser()
 parser.add_option('-t', '--testmetadata', dest='metadata', default='data/test.csv')
-parser.add_option('-d', '--dataset', dest='dataset_path', default='home/dualeoo/test')
-parser.add_option('o', '--output', dest='output', default='data/test.pickle')
+parser.add_option('-d', '--dataset', dest='dataset_path', default='/home/dualeoo/test')
+parser.add_option('-o', '--output', dest='output', default='data/test.pickle')
 
 options, args = parser.parse_args()
 
@@ -41,14 +47,13 @@ name_list = []
 
 data = None
 
-with open(options.metadata, 'rb') as f:
-    data = np.array(csv.reader(f))
-    print(data)
+with open(options.metadata, 'r') as f:
+    for row in csv.reader(f):
+        name_list.append(row[0])
 
-data = collect_data(data, options.dataset_path)
 
-print(data)
+data = collect_data(name_list, options.dataset_path)
 
-with open(options.output, 'wb'):
-    dump(data, protocol=4)
-    
+with open(options.output, 'wb') as f:
+    dump(data, f, protocol=4)
+

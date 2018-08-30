@@ -1,5 +1,6 @@
 from common import load_track, get_layer_output_function
 
+from pickle import dump
 import pickle
 from optparse import OptionParser
 import numpy as np
@@ -33,9 +34,12 @@ if __name__ == '__main__':
     #get data
     metadata = pickle.load(open(options.testdata, 'rb'))
     x_test = metadata['x']
-    y_test = metadata['y']
+
+    # model.predict(x_test)
     
     #evaluate
     print('Evaluate model.')
-    print(model.evaluate(x_test, y_test))
-    
+    result = model.evaluate(x_test)
+
+    with open('test_result.pickle', 'wb') as f:
+        dump(result, f, protocol = 4)
