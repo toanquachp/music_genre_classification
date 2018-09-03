@@ -24,7 +24,7 @@ config:
       data_format: channels_last
       dilation_rate: !!python/tuple [1]
       dtype: float32
-      filters: 256
+      filters: 512
       kernel_constraint: null
       kernel_initializer:
         class_name: VarianceScaling
@@ -77,7 +77,7 @@ config:
       data_format: channels_last
       dilation_rate: !!python/tuple [1]
       dtype: float32
-      filters: 256
+      filters: 512
       kernel_constraint: null
       kernel_initializer:
         class_name: VarianceScaling
@@ -130,7 +130,7 @@ config:
       data_format: channels_last
       dilation_rate: !!python/tuple [1]
       dtype: float32
-      filters: 256
+      filters: 512
       kernel_constraint: null
       kernel_initializer:
         class_name: VarianceScaling
@@ -171,11 +171,223 @@ config:
         - 0
         - {}
     name: max_pooling1d_2
-  - class_name: Dropout
-    config: {dtype: float32, name: dropout, noise_shape: null, rate: 0.5, seed: null,
-      trainable: true}
+  - class_name: Conv1D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {dtype: float32}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: !!python/tuple [1]
+      dtype: float32
+      filters: 512
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, dtype: float32, mode: fan_avg, scale: 1.0,
+          seed: null}
+      kernel_regularizer: null
+      kernel_size: !!python/tuple [5]
+      name: convolution_4
+      padding: valid
+      strides: !!python/tuple [1]
+      trainable: true
+      use_bias: true
     inbound_nodes:
     - - - max_pooling1d_2
+        - 0
+        - 0
+        - {}
+    name: convolution_4
+  - class_name: Activation
+    config: {activation: relu, dtype: float32, name: activation_3, trainable: true}
+    inbound_nodes:
+    - - - convolution_4
+        - 0
+        - 0
+        - {}
+    name: activation_3
+  - class_name: MaxPooling1D
+    config:
+      dtype: float32
+      name: max_pooling1d_3
+      padding: valid
+      pool_size: !!python/tuple [2]
+      strides: !!python/tuple [2]
+      trainable: true
+    inbound_nodes:
+    - - - activation_3
+        - 0
+        - 0
+        - {}
+    name: max_pooling1d_3
+  - class_name: Conv1D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {dtype: float32}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: !!python/tuple [1]
+      dtype: float32
+      filters: 512
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, dtype: float32, mode: fan_avg, scale: 1.0,
+          seed: null}
+      kernel_regularizer: null
+      kernel_size: !!python/tuple [5]
+      name: convolution_5
+      padding: valid
+      strides: !!python/tuple [1]
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - max_pooling1d_3
+        - 0
+        - 0
+        - {}
+    name: convolution_5
+  - class_name: Activation
+    config: {activation: relu, dtype: float32, name: activation_4, trainable: true}
+    inbound_nodes:
+    - - - convolution_5
+        - 0
+        - 0
+        - {}
+    name: activation_4
+  - class_name: MaxPooling1D
+    config:
+      dtype: float32
+      name: max_pooling1d_4
+      padding: valid
+      pool_size: !!python/tuple [2]
+      strides: !!python/tuple [2]
+      trainable: true
+    inbound_nodes:
+    - - - activation_4
+        - 0
+        - 0
+        - {}
+    name: max_pooling1d_4
+  - class_name: Conv1D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {dtype: float32}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: !!python/tuple [1]
+      dtype: float32
+      filters: 512
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, dtype: float32, mode: fan_avg, scale: 1.0,
+          seed: null}
+      kernel_regularizer: null
+      kernel_size: !!python/tuple [5]
+      name: convolution_6
+      padding: valid
+      strides: !!python/tuple [1]
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - max_pooling1d_4
+        - 0
+        - 0
+        - {}
+    name: convolution_6
+  - class_name: Activation
+    config: {activation: relu, dtype: float32, name: activation_5, trainable: true}
+    inbound_nodes:
+    - - - convolution_6
+        - 0
+        - 0
+        - {}
+    name: activation_5
+  - class_name: MaxPooling1D
+    config:
+      dtype: float32
+      name: max_pooling1d_5
+      padding: valid
+      pool_size: !!python/tuple [2]
+      strides: !!python/tuple [2]
+      trainable: true
+    inbound_nodes:
+    - - - activation_5
+        - 0
+        - 0
+        - {}
+    name: max_pooling1d_5
+  - class_name: Conv1D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {dtype: float32}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: !!python/tuple [1]
+      dtype: float32
+      filters: 512
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, dtype: float32, mode: fan_avg, scale: 1.0,
+          seed: null}
+      kernel_regularizer: null
+      kernel_size: !!python/tuple [5]
+      name: convolution_7
+      padding: valid
+      strides: !!python/tuple [1]
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - max_pooling1d_5
+        - 0
+        - 0
+        - {}
+    name: convolution_7
+  - class_name: Activation
+    config: {activation: relu, dtype: float32, name: activation_6, trainable: true}
+    inbound_nodes:
+    - - - convolution_7
+        - 0
+        - 0
+        - {}
+    name: activation_6
+  - class_name: MaxPooling1D
+    config:
+      dtype: float32
+      name: max_pooling1d_6
+      padding: valid
+      pool_size: !!python/tuple [2]
+      strides: !!python/tuple [2]
+      trainable: true
+    inbound_nodes:
+    - - - activation_6
+        - 0
+        - 0
+        - {}
+    name: max_pooling1d_6
+  - class_name: Dropout
+    config: {dtype: float32, name: dropout, noise_shape: null, rate: 0.6, seed: null,
+      trainable: true}
+    inbound_nodes:
+    - - - max_pooling1d_6
         - 0
         - 0
         - {}
@@ -222,7 +434,7 @@ config:
         - {}
     name: lstm
   - class_name: Dropout
-    config: {dtype: float32, name: dropout_1, noise_shape: null, rate: 0.5, seed: null,
+    config: {dtype: float32, name: dropout_1, noise_shape: null, rate: 0.6, seed: null,
       trainable: true}
     inbound_nodes:
     - - - lstm
@@ -252,7 +464,7 @@ config:
           kernel_regularizer: null
           name: dense
           trainable: true
-          units: 8
+          units: 10
           use_bias: true
       name: time_distributed
       trainable: true
@@ -274,16 +486,16 @@ config:
     config:
       arguments: {}
       dtype: float32
-      function: !!python/tuple ['4wEAAAAAAAAAAQAAAAQAAABTAAAAcxMAAAB0AABqAQB8AABkAQBkAgCDAQFTKQNO2gRheGlz6QEA
+      function: !!python/tuple ['4wEAAAAAAAAAAQAAAAQAAABTAAAAcw4AAAB0AGoBfABkAWQCjQJTACkDTukBAAAAKQHaBGF4aXMp
 
-          AAApAtoBS9oEbWVhbikB2gF4qQByBgAAAPoIbW9kZWwucHnaCDxsYW1iZGE+LgAAAHMAAAAA
+          AtoBS9oEbWVhbikB2gF4qQByBgAAAPoIdHJhaW4ucHnaCDxsYW1iZGE+NAAAAHMAAAAA
 
           ', null, null]
       function_type: lambda
       name: output_merged
-      output_shape: !!python/tuple ['4wEAAAAAAAAAAQAAAAQAAABTAAAAcxkAAAB8AABkAQAZZgEAfAAAZAIAZAAAhQIAGRdTKQNO6QAA
+      output_shape: !!python/tuple ['4wEAAAAAAAAAAQAAAAQAAABTAAAAcxYAAAB8AGQBGQBmAXwAZAJkAIUCGQAXAFMAKQNO6QAAAADp
 
-          AADpAgAAAKkAKQHaBXNoYXBlcgMAAAByAwAAAPoIbW9kZWwucHnaCDxsYW1iZGE+LwAAAHMAAAAA
+          AgAAAKkAKQHaBXNoYXBlcgMAAAByAwAAAPoIdHJhaW4ucHnaCDxsYW1iZGE+NQAAAHMAAAAA
 
           ', null, null]
       output_shape_type: lambda
