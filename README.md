@@ -13,3 +13,13 @@
 ## Requirements
 
 `sudo apt install ffmpeg`
+
+## Result
+
+75% accuracy on training set - 4500 songs
+70% accuracy on validation set - 500 songs
+69% accuracy on test set - 1000 songs
+
+## Dataset
+
+5000 songs for training and 1000 songs for testing were provided by Zalo inc. through the Zalo AI Ch
