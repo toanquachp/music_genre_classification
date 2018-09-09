@@ -54,7 +54,6 @@ parser = OptionParser()
 parser.add_option('-t', '--trainmetadata', dest='metadata', default='data/train.csv')
 parser.add_option('-d', '--dataset', dest='dataset_path',
                   default="/home/dualeoo/train")
-parser.add_option('-o', '--output', dest='output', default='data/train.pickle')
 options, args = parser.parse_args()
 
 labelDic = {}
@@ -67,6 +66,6 @@ with open(options.metadata, 'r') as f:
 data = collect_data(labelDic, options.dataset_path)
 print(data)
 
-with open('data/' + options.output, 'wb') as f:
+with open('data/train.pickle', 'wb') as f:
     dump(data, f, protocol=4)
 

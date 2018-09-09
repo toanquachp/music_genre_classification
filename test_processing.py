@@ -39,7 +39,6 @@ def collect_data(data, dataset_path):
 parser = OptionParser()
 parser.add_option('-t', '--testmetadata', dest='metadata', default='data/test.csv')
 parser.add_option('-d', '--dataset', dest='dataset_path', default='/home/dualeoo/test')
-parser.add_option('-o', '--output', dest='output', default='data/test.pickle')
 
 options, args = parser.parse_args()
 
@@ -54,6 +53,6 @@ with open(options.metadata, 'r') as f:
 
 data = collect_data(name_list, options.dataset_path)
 
-with open(options.output, 'wb') as f:
+with open('data/test.pickle', 'wb') as f:
     dump(data, f, protocol=4)
 

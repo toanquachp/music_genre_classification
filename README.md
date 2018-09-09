@@ -1,15 +1,37 @@
-# Zalo AI Challenge
+# Zalo AI Challenge - Shiro&Minh
 
-## Train
+## Members
 
-`python data_processinng.py -t train_metadata_csv -o output_filepath_for_pickle`
-
-`python model.py -d dataset_pickle -m model_yaml_path -w weight_path`
-
-## Test
-
-`python test.py -t test_pickle -m model_yaml -w weight_h5`
+- Quach Phuong Toan - 0963819039
+- Tran Van Minh - 0901380306
 
 ## Requirements
 
+The program requires `ffmpeg` to run, please run the following command to install it
+
 `sudo apt install ffmpeg`
+
+## Train
+
+Before training, please process the data first by running the `train_processing.py`
+Please put the `train.csv` file path and the data-set path to the command, or copy all the song files into the `data/train` folder
+
+`python train_processing.py -t {train.csv} -d {data/train}`
+
+After processing the dataset, the data will be stored as pickle in file `data/data_processing.pickle`
+
+`python train.py`
+
+After training, the model and its weight can be found in the `model` folder as `model.yaml` and `model_weight.h5`
+
+## Test
+
+Before testing, please process the data first by running the `test_processing.py`
+Please put the `test.csv` file path and the data-set path to the command, or copy all the song files into the `data/test` folder
+
+`python test_processing.py -t {test.csv} -d {data/test}`
+
+After processing the dataset, the data will be stored as pickle in file `data/test.pickle` 
+
+`python test.py`
+
