@@ -5,6 +5,16 @@
 - Quach Phuong Toan - 0963819039
 - Tran Van Minh - 0901380306
 
+## Result
+
+75% accuracy on training set - 4500 songs
+70% accuracy on validation set - 500 songs
+69% accuracy on test set - 1000 songs
+
+## Dataset
+
+5000 songs for training and 1000 songs for testing were provided by Zalo inc. through the Zalo AI Ch
+
 ## Requirements
 
 The program requires `ffmpeg` to run, please run the following command to install it
@@ -34,18 +44,3 @@ Please put the `test.csv` file path and the data-set path to the command, or cop
 After processing the dataset, the data will be stored as pickle in file `data/test.pickle` 
 
 `python test.py`
-
-<<<<<<< HEAD
-=======
-`sudo apt install ffmpeg`
-
-## Result
-
-75% accuracy on training set - 4500 songs
-70% accuracy on validation set - 500 songs
-69% accuracy on test set - 1000 songs
-
-## Dataset
-
-5000 songs for training and 1000 songs for testing were provided by Zalo inc. through the Zalo AI Ch
->>>>>>> 731a92ba0790dda141ec382c08a3e3c416e21d45
